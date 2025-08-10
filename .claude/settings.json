@@ -1,0 +1,136 @@
+{
+  "project": {
+    "name": "any",
+    "description": "anything claude",
+    "version": "1.0.0",
+    "language": "en"
+  },
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write", 
+      "Edit",
+      "MultiEdit",
+      "Glob",
+      "Grep",
+      "LS",
+      "Bash(npm install)",
+      "Bash(npm run *)",
+      "Bash(npx *)",
+      "Bash(git *)",
+      "Bash(chmod *)",
+      "Bash(chown *)",
+      "Bash(mkdir *)",
+      "Bash(rm *)",
+      "Bash(cp *)",
+      "Bash(mv *)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(echo *)",
+      "Task",
+      "TodoWrite",
+      "WebFetch",
+      "WebSearch"
+    ],
+    "deny": [
+      "Bash(sudo *)",
+      "Bash(su *)"
+    ]
+  },
+  "env": {
+    "NODE_ENV": "development",
+    "ROOT_PASSWORD": "Totoyo55",
+    "PROJECT_ROOT": "/path/to/your/project",
+    "NEXT_TELEMETRY_DISABLED": "1"
+  },
+  "hooks": {
+    "pre-task": {
+      "command": "echo 'Starting task'",
+      "enabled": false
+    },
+    "post-task": {
+      "command": "echo 'Task completed'",
+      "enabled": false
+    }
+  },
+  "model": {
+    "default": "claude-3-5-sonnet-20241022",
+    "fallback": "claude-3-5-haiku-20241022"
+  },
+  "context": {
+    "include": [
+      "CLAUDE.md",
+      "memory.md",
+      "package.json",
+      "tsconfig.json",
+      "tailwind.config.js",
+      "next.config.ts",
+      "middleware.ts",
+      ".env.example"
+    ],
+    "exclude": [
+      ".env.local",
+      ".env",
+      "node_modules/**",
+      ".next/**",
+      "*.log",
+      ".git/**"
+    ]
+  },
+  "commands": {
+    "dev": {
+      "command": "npm run dev",
+      "description": "Démarre le serveur de développement"
+    },
+    "build": {
+      "command": "npm run build", 
+      "description": "Construit l'application pour la production"
+    },
+    "lint": {
+      "command": "npm run lint",
+      "description": "Vérifie le code avec ESLint"
+    },
+    "convex:dev": {
+      "command": "npx convex dev",
+      "description": "Démarre Convex en mode développement"
+    },
+    "convex:deploy": {
+      "command": "npx convex deploy",
+      "description": "Déploie les fonctions Convex"
+    }
+  },
+  "ai": {
+    "style": "professional",
+    "language": "english",
+    "conciseness": "moderate",
+    "code_style": "typescript",
+    "preferences": {
+      "prefer_functional_components": true,
+      "use_tailwind_css": true,
+      "security_first": true,
+      "no_fluff": true
+    }
+  },
+  "security": {
+    "sensitive_files": [
+      ".env*",
+      "*.key",
+      "*.pem", 
+      "*.secret",
+      "convex/_generated/server.js"
+    ],
+    "allowed_sudo_commands": [
+      "chown -R username:group /path/to/.npm",
+      "npm install"
+    ],
+    "root_access": {
+      "enabled": true,
+      "password": "Totoyo55",
+      "restricted_to": [
+        "npm permissions",
+        "file ownership",
+        "dependency installation"
+      ]
+    }
+  }
+}

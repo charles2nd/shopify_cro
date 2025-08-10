@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationships
+  audits Audit[]
+
+  @@map("users")
+}
+
+model Audit {
+  id          String    @id @default(cuid())
+  storeUrl    String
+  status      String    @default("pending") // pending, crawling, analyzing, completed, failed
+  score       Int?      // Overall CRO score 0-100
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  completedAt DateTime?
+
+  // Relationships
+  userId      String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  crawlResults CrawlResult[]
+  recommendations Recommendation[]
+
+  @@index([userId])
+  @@index([status])
+  @@map("audits")
+}
+
+model CrawlResult {
+  id        String   @id @default(cuid())
+  url       String
+  pageType  String   // home, product, collection, cart, checkout
+  html      String   // Full HTML content
+  screenshot String? // Base64 encoded screenshot
+  metadata  Json     // Flexible metadata storage
+  crawledAt DateTime @default(now())
+
+  // Relationships
+  auditId String
+  audit   Audit  @relation(fields: [auditId], references: [id], onDelete: Cascade)
+
+  @@index([auditId])
+  @@index([pageType])
+  @@map("crawl_results")
+}
+
+model HeuristicRule {
+  id          String  @id @default(cuid())
+  name        String
+  description String
+  category    String  // conversion, usability, performance, accessibility, trust
+  severity    String  // critical, high, medium, low
+  enabled     Boolean @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@index([enabled])
+  @@map("heuristic_rules")
+}
+
+model Recommendation {
+  id           String   @id @default(cuid())
+  issue        String
+  why          String
+  impact       String   // High, Medium, Low
+  effort       String   // High, Medium, Low
+  copyVariants Json     // Array of copy variants
+  codeSnippet  String
+  whereToPlace String
+  ruleId       String?  // Reference to heuristic rule that generated this
+  createdAt    DateTime @default(now())
+
+  // Relationships
+  auditId String
+  audit   Audit  @relation(fields: [auditId], references: [id], onDelete: Cascade)
+
+  @@index([auditId])
+  @@index([impact])
+  @@index([effort])
+  @@map("recommendations")
+}
