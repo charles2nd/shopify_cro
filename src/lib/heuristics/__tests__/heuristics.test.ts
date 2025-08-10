@@ -4,7 +4,7 @@
  */
 
 import { HeroCTARule } from '../hero-cta';
-import type { Page, Finding, HeuristicResult } from '../../../types';
+import type { Page, HeuristicResult } from '../../../types';
 
 describe('Hero CTA Heuristic Rule - TDD', () => {
   let heroCTARule: HeroCTARule;

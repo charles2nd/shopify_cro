@@ -29,7 +29,7 @@ export default function HomePage() {
               <div className="p-6 border border-gray-200 rounded-lg">
                 <h3 className="text-lg font-medium mb-3">Quick Audit</h3>
                 <p className="text-gray-600 mb-4">
-                  Analyze your store's homepage, product pages, and checkout flow
+                  Analyze your store&apos;s homepage, product pages, and checkout flow
                 </p>
                 <button 
                   className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
