@@ -47,9 +47,10 @@ jobs:
       - name: Setup test database
         env:
           DATABASE_URL: postgresql://test_user:test_password@localhost:5432/shopify_cro_test
+          DIRECT_URL: postgresql://test_user:test_password@localhost:5432/shopify_cro_test
         run: |
           npx prisma generate
-          npx prisma migrate deploy
+          npx prisma db push --accept-data-loss
           npx prisma db seed
 
       - name: Run type checking
@@ -134,9 +135,10 @@ jobs:
       - name: Setup test database
         env:
           DATABASE_URL: postgresql://test_user:test_password@localhost:5432/shopify_cro_test
+          DIRECT_URL: postgresql://test_user:test_password@localhost:5432/shopify_cro_test
         run: |
           npx prisma generate
-          npx prisma migrate deploy
+          npx prisma db push --accept-data-loss
           npx prisma db seed
 
       - name: Build application
@@ -224,12 +226,12 @@ jobs:
         if: github.event_name == 'pull_request'
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v3
         with:
           languages: javascript
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
 
   # Aggregate Results
   test-complete:
